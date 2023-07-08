@@ -183,9 +183,26 @@ const Header = () => {
                 </div>
                 <Collapse open={openNav}>
                     {navList}
-                    <Button variant="gradient" size="sm" fullWidth className="mb-2 text-gray-100 bg-indigo-500">
-                        <span>Log In</span>
-                    </Button>
+
+                    {user && user.uid ?
+                        <Button onClick={handleSubmit} variant="gradient" size="sm" fullWidth className="mb-2 text-gray-100 bg-indigo-500">
+                            <span>Log out</span>
+                        </Button>
+                        :
+                        <>
+                            <Link to='/login'>
+                                <Button variant="gradient" size="sm" fullWidth className="mb-2 text-gray-100 bg-indigo-500">
+                                    <span>Log In</span>
+                                </Button>
+                            </Link>
+                            <Link to='/signup'>
+                                <Button variant="gradient" size="sm" fullWidth className="mb-2 text-gray-100 bg-indigo-500">
+                                    <span>Sign up</span>
+                                </Button>
+                            </Link>
+                        </>
+                    }
+
                 </Collapse>
             </Navbar>
         </>
