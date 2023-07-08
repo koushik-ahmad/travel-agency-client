@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { UserContext } from '../../contexts/AuthContext';
 import { toast } from 'react-hot-toast';
 
 
 const Login = () => {
+    const [userEmail, setUserEmail] = useState('');
     const [error, setError] = useState(null);
     const { user, signIn, resetPassword, googleSignIn } = useContext(UserContext);
 
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || '/';
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -21,6 +25,9 @@ const Login = () => {
                 const user = result.user;
                 console.log(user);
                 form.reset();
+                toast.success('login success')
+                navigate(from, { replace: true });
+
             })
             .catch(error => {
                 console.error(error);
@@ -29,9 +36,8 @@ const Login = () => {
 
     }
 
-    const handleReset = (event) => {
-        const email = event.target.value;
-        resetPassword(email)
+    const handleReset = () => {
+        resetPassword(userEmail)
             .then(() => {
                 toast.success('Password reset email sent!')
             })
@@ -39,7 +45,7 @@ const Login = () => {
                 console.error(error);
                 setError(error.message);
             })
-        
+
     }
 
     const handleGoogleSignIn = () => {
@@ -47,6 +53,7 @@ const Login = () => {
             .then(result => {
                 const user = result.user;
                 console.log(user);
+                navigate(from, { replace: true });
             })
             .catch(error => {
                 console.error(error);
@@ -64,7 +71,14 @@ const Login = () => {
                 className="space-y-6">
                 <div className="space-y-1 text-sm">
                     <label htmlFor="email" className="block text-gray-600">Email Address</label>
-                    <input type="email" name="email" id="email" placeholder="Type your email address" className="w-full px-4 py-3 border-2 rounded-md border-gray-400 bg-gray-50 text-gray-800 focus:border-violet-600" />
+                    <input
+                        onBlur={(event) => setUserEmail(event.target.value)}
+                        type="email"
+                        name="email"
+                        id="email"
+                        placeholder="Type your email address"
+                        className="w-full px-4 py-3 border-2 rounded-md border-gray-400 bg-gray-50 text-gray-800 focus:border-violet-600"
+                    />
                 </div>
                 <div className="space-y-1 text-sm">
                     <label htmlFor="password" className="block text-gray-600">Password</label>

@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { UserContext } from '../../contexts/AuthContext';
+import { toast } from 'react-hot-toast';
 
 
 const Signup = () => {
     const [error, setError] = useState(null);
-    const { createUser, googleSignIn } = useContext(UserContext);
+    const { createUser, updateName, verifyEmail, googleSignIn } = useContext(UserContext);
 
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || '/';
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -17,38 +21,64 @@ const Signup = () => {
         const password = form.password.value;
         const confirm = form.confirm.value;
 
+        // password validation
         if (password.length < 6) {
             setError('password should be 6 character or more');
             return;
         }
-
         if (password !== confirm) {
             setError('password did not match');
             return;
         }
 
+        //1. create user 
         createUser(email, password)
             .then(result => {
                 const user = result.user;
                 console.log(user);
-                form.reset();
+                // form.reset();
+                // navigate(from, { replace: true });
+
+                // 2. update name 
+                updateName(name)
+                    .then(() => {
+                        // toast.success('Name updated');
+
+                        // 3. email verification 
+                        verifyEmail()
+                            .then(() => {
+                                toast.success('Please check your email for verification');
+                                navigate(from, { replace: true });
+                            })
+                            .catch((error) => {
+                                toast.error(error.message);
+                            })
+                    })
+                    .catch((error) => {
+                        toast.error(error.message);
+                    });
             })
             .catch(error => {
                 console.error(error);
+                toast.error(error.message);
             })
+
+        form.reset();
 
     }
 
+    // google sing In
     const handleGoogleSignIn = () => {
         googleSignIn()
             .then(result => {
                 const user = result.user;
                 console.log(user);
+                navigate(from, { replace: true });
             })
             .catch(error => {
                 console.error(error);
             })
-        
+
     }
 
     return (

@@ -3,12 +3,14 @@ import { DatePicker } from 'antd';
 import { Space } from 'antd';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { Link } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
 dayjs.extend(customParseFormat);
 
 
-
-const Destination = () => {
+const Booking = () => {
+    const destinationData = useLoaderData();
+    const { name, title, place } = destinationData;
+    console.log(destinationData);
     const dateFormat = 'YYYY/MM/DD';
 
     return (
@@ -20,16 +22,10 @@ const Destination = () => {
                         <div className="container justify-center p-6 mx-auto sm:py-12 lg:py-24 lg:flex-row lg:justify-between">
                             <div className="flex flex-col justify-center p-6 text-center rounded-sm lg:max-w-md xl:max-w-lg lg:text-left">
                                 <h1 className="text-5xl font-serif font-bold sm:text-6xl uppercase">
-                                    Cox's Bazar
+                                    {name}
                                 </h1>
                                 <p className="mt-6 mb-8 text-md sm:mb-12">
-                                    Cox’s Bazar is a town on the southeast coast of Bangladesh. It’s
-                                    known for its very long, sandy beachfront, stretching from Sea
-                                    Beach in the north to Kolatoli Beach in the south. Aggameda
-                                    Khyang monastery is home to bronze statues and
-                                    centuries-old Buddhist manuscripts. South of town, the
-                                    tropical rainforest of Himchari National Park has waterfalls and
-                                    many birds. North, sea turtles breed on nearby Sonadia Island.
+                                    {title}
                                 </p>
                             </div>
                         </div>
@@ -44,7 +40,7 @@ const Destination = () => {
                             <label htmlFor="username" className="self-start text-sm font-semibold">Origin</label>
                             <input id="username" type="text" defaultValue="Dhaka" className="flex items-center font-bold h-12 px-4 mt-2 rounded focus:outline-none focus:ri bg-gray-100 text-gray-900 focus:border-violet-600 focus:ri" />
                             <label htmlFor="password" className="self-start mt-3 text-sm font-semibold">Destination</label>
-                            <input id="password" type="text" defaultValue="Cox's Bazar" className="flex items-center font-bold h-12 px-4 mt-2 rounded focus:outline-none focus:ri bg-gray-100 text-gray-900 focus:border-violet-600 focus:ri" />
+                            <input id="password" type="text" defaultValue={place} className="flex items-center font-bold h-12 px-4 mt-2 rounded focus:outline-none focus:ri bg-gray-100 text-gray-900 focus:border-violet-600 focus:ri" />
 
                             <div className='flex mx-auto gap-20 pt-6 pb-10'>
                                 <div className='border-2 rounded-lg '>
@@ -69,4 +65,4 @@ const Destination = () => {
     );
 };
 
-export default Destination;
+export default Booking;

@@ -8,6 +8,8 @@ import Destination from '../components/Destination/Destination';
 import News from '../components/News/News';
 import Contact from '../components/Contact/Contact';
 import ErrorPage from '../components/Others/ErrorPage';
+import PrivateRoute from './PrivateRoute';
+import Booking from '../components/Others/Booking';
 
 const router = createBrowserRouter([
     {
@@ -17,19 +19,26 @@ const router = createBrowserRouter([
         children: [
             {
                 path: '/',
-                element: <News></News>
+                element: <News></News>,
+                loader: () => fetch(`https://travel-agency-server-ten.vercel.app/place/`)
             },
             {
                 path: '/news',
-                element: <News></News>
+                element: <News></News>,
+                loader: () => fetch(`https://travel-agency-server-ten.vercel.app/place/`)
             },
             {
                 path: '/destination',
-                element: <Destination></Destination>
+                element: <PrivateRoute><Destination></Destination></PrivateRoute>,
+            },
+            {
+                path: '/booking/:id',
+                element: <PrivateRoute><Booking></Booking></PrivateRoute>,
+                loader: ({ params }) => fetch(`https://travel-agency-server-ten.vercel.app/place/${params.id}`)
             },
             {
                 path: '/blog',
-                element: <Blog></Blog>
+                element: <PrivateRoute><Blog></Blog></PrivateRoute>
             },
             {
                 path: '/contact',

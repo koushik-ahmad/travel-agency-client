@@ -1,6 +1,6 @@
 body {
     position: relative;
-    background: rgba(0, 0, 0, 0.5) url(/public/images/Rectangle-1.png);
+    background: rgba(0, 0, 0, 0.5) url('https://i.ibb.co/YLcwXnH/Rectangle-1.png');
     opacity: 0.8;
     background-size: cover;
     background-repeat: no-repeat;

@@ -2,24 +2,24 @@ import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../../contexts/AuthContext';
 import { Navbar, Typography, Button, IconButton, Collapse, } from "@material-tailwind/react";
+import { toast } from 'react-hot-toast';
 
 
 
 const Header = () => {
     const { user, logOut } = useContext(UserContext);
 
-
     const handleSubmit = (event) => {
         event.preventDefault();
 
         logOut()
             .then(() => {
-
+                toast.success('log out');
             })
             .catch(error => {
-                console.error(error)
+                console.error(error);
+                toast.error(error.message);
             })
-
     }
 
 
@@ -83,14 +83,14 @@ const Header = () => {
 
                     <div className="flex items-center gap-2 ">
                         <Link>
-                            <img className="w-22 h-12" src="logo.png" alt="" />
+                            <img className="w-22 h-12" src="https://i.ibb.co/WHBbznX/logo.png" alt="" />
                         </Link>
                         <h2 className="lg:flex hidden font-bold uppercase">A Trusted Agency</h2>
                     </div>
 
                     <div>
                         <fieldset className="w-full space-y-1 text-gray-800">
-                            <label for="Search" className="hidden">Search</label>
+                            <label htmlFor="Search" className="hidden">Search</label>
                             <div className="relative">
                                 <span className="absolute inset-y-0 left-0 flex items-center pl-2">
                                     <button type="button" title="search" className="p-1 focus:outline-none focus:ring">
@@ -102,7 +102,7 @@ const Header = () => {
                                 <input type="search" name="Search" placeholder="Search your destination..." className="w-32 py-2 pl-10 text-sm rounded-md sm:w-auto focus:outline-none bg-gray-100 text-gray-800 focus:bg-gray-50 focus:border-violet-600" />
                             </div>
                         </fieldset>
-                   </div>
+                    </div>
 
                     <div className="flex items-center gap-4">
                         <div className="hidden lg:block">{navList}</div>
